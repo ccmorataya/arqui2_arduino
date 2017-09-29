@@ -1,11 +1,11 @@
 #include <Servo.h>
 Servo servoIzqDer;
-Servo servoAribaAbajo;
+Servo servoArribaAbajo;
 Servo servoGarra;
 int anguloIzqDer;
 int anguloArribaAbajo;
 int anguloGarra;
-int salto = 30;
+int salto = 3;
 int ejeIzqDer = A1;
 int ejeArribaAbajo = A2;
 int ejeGarra = A3;
@@ -24,29 +24,30 @@ void setup()
 
 void loop()
 {
+
     // CM: Servo que controla la garra
     int p = analogRead(ejeGarra);
-    if (p < 400)
+    if (p < 350)
         anguloGarra -= salto;
-    else if (p > 600)
+    else if (p > 650)
         anguloGarra += salto;
 
     servoGarra.write(anguloGarra);
 
     // CM: Servo que controla el movimiento del brazo arriba y abajo
-    int p = analogRead(ejeArribaAbajo);
-    if (p < 400)
+    int paa = analogRead(ejeArribaAbajo);
+    if (paa < 350)
         anguloArribaAbajo -= salto;
-    else if (p > 600)
+    else if (paa > 650)
         anguloArribaAbajo += salto;
 
     servoArribaAbajo.write(anguloArribaAbajo);
 
     // CM: Servo que controla el movimiento del brazo izquierda y derecha
-    int p = analogRead(ejeIzqDer);
-    if (p < 400)
+    int pid = analogRead(ejeIzqDer);
+    if (pid < 350)
         anguloIzqDer -= salto;
-    else if (p > 600)
+    else if (pid > 650)
         anguloIzqDer += salto;
 
     servoIzqDer.write(anguloIzqDer);
@@ -86,6 +87,12 @@ void loop()
             anguloIzqDer += salto;
 
         servoIzqDer.write(anguloIzqDer);
+
+        if (serialListener == 'R'){
+          anguloGarra = 90;
+          anguloArribaAbajo = 90;
+          anguloIzqDer = 90;
+        }
     }
 
     delay (50);
